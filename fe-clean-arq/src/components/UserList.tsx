@@ -13,7 +13,10 @@ export const UserList: React.FC = () => {
     setUsers(data);
   };
 
-
+  const handleDelete = async (id: number) => {
+    await UserUseCases.deleteUser(id);
+    loadUsers();
+  };
 
   useEffect(() => {
     loadUsers();
@@ -37,6 +40,7 @@ export const UserList: React.FC = () => {
               </button>
               <button
                 className={`${styles.button} ${styles.delete}`}
+                onClick={() => handleDelete(user.id)}
               >
                 Delete
               </button>
