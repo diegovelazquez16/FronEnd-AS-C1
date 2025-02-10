@@ -25,10 +25,19 @@ export const UserForm: React.FC<UserFormProps> = ({ user, onSave }) => {
     setFormData((prev) => ({ ...prev, [name]: name === "age" ? Number(value) : value }));
   };
 
-
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (user) {
+      await UserUseCases.updateUser({ ...formData, id: user.id });
+    } else {
+      await UserUseCases.createUser(formData);
+    }
+    onSave();
+    setFormData({ name: "", email: "", age: 0 });
+  };
 
   return (
-    <form >
+    <form onSubmit={handleSubmit}>
       <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
       <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
       <input type="number" name="age" value={formData.age} onChange={handleChange} placeholder="Age" required />
